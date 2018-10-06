@@ -25,6 +25,19 @@ class Home extends Component {
 
 
     }
+     async componentDidUpdate(){        
+         if(this.props.location.state&& this.props.location.state.fromPost){
+            try {
+                let data1 = await blogsService.all();
+                this.setState({
+                    blogList: await data1
+                });
+            } catch (error) {
+                console.log(error);
+            }
+    
+         }
+     }
 
 
 
