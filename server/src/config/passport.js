@@ -47,6 +47,7 @@ function configurePassport(app) {
             let author = await authorsTable.getOne(tokenRecord.authorid);
             if (author) {
                 delete author.password;
+                delete author.hash;
                 return done(null, author);
             } else {
                 return done(null, false, { message: 'Invalid token' });
