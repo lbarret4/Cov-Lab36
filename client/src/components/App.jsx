@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 import Login from './auth/login';
 import Logout from './auth/logout';
 import PrivateRoute from './auth/privateRoute';
+import Create from './auth/createAcct';
 
 
 class Navigation extends Component {
@@ -26,7 +27,7 @@ class Navigation extends Component {
                             <Route path="/login" component={Login} />
                             <Route path="/logout" component={Logout} />
                             <Route exact path="/blogs/:id/" component={BlogCard} key={"/blogs/:id/"} />
-
+                            <Route path="/create-account" component={Create} />
                             <PrivateRoute exact path="/post" component={BlogEdit} />
                             
                         </Switch>
