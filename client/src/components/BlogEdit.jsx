@@ -4,8 +4,7 @@ import Tags from './Tags';
 import { Redirect } from 'react-router-dom';
 import * as blogsService from '../services/blogs';
 import * as blogtagsService from '../services/blogtags';
-
-
+import * as userService from '../services/user';
 class BlogEdit extends Component {
     constructor(props) {
         super(props);
@@ -22,8 +21,7 @@ class BlogEdit extends Component {
         this.handlesClose = this.handlesClose.bind(this);
     }
 
-    componentDidUpdate() {
-
+    componentDidMount(){
         if (this.props.edit && this.props.blog && this.state.title === null && this.state.content === null) {
             this.setState({
                 title: this.props.blog.title,
@@ -42,15 +40,18 @@ class BlogEdit extends Component {
             if (item.type === 'text' && item.name !== 'otherText') blog.title = item.value;
             if (item.type === 'textarea') blog.content = item.value;
         }
+        e.preventDefault();
         if (this.props.edit) {
             this.edit([...tags], blog, this.props.id);
+            this.setState({
+                redirect: true
+            });
         } else {
             this.post([...tags], blog);
+            this.props.history.replace('/',{ fromPost: true })
         }
-        e.preventDefault();
-        this.setState({
-            redirect: true
-        });
+        
+      
 
     }
 
@@ -70,20 +71,24 @@ class BlogEdit extends Component {
     handlesClose(e) {
         e.preventDefault();
         if (!this.props.edit) {
-            this.props.history.goBack();
+            this.props.history.push('/');
         }
 
     }
     async post(tags, blog) {
         alert('submitted post');
         try {
-            let res1 = await blogsService.insert(blog);
-            let id = await res1.id;
+            let res1 = await userService.me();
+            blog.authorid = await res1.id;
+            let res2 = await blogsService.insert(blog);
+            let id = await res2.id;            
+           
+            
             tags.forEach(async (element) => {
                 let blogTag = {};
                 blogTag.blogid = id;
                 blogTag.tagid = element;
-                let res2 = await blogtagsService.insert(blogTag);
+                let res3 = await blogtagsService.insert(blogTag);
             });
         } catch (error) {
             console.log(error);
@@ -96,7 +101,6 @@ class BlogEdit extends Component {
 
     async edit(tags, blog, id) {
         alert('submitted changes to post');
-        console.log(this.props.location.pathname);
         try {
             let res1 = await blogsService.update(id, blog);
             await blogtagsService.destroy(id);
@@ -140,11 +144,11 @@ class BlogEdit extends Component {
 
         return (
             <Fragment>
-                {this.state.redirect ? <Redirect to="/" /> : ' '}
+                {this.state.redirect ? <Redirect push to="/" /> : ' '}
 
                 <div className="modal-content my-1">
                     <div className="modal-header">
-                        <h5 className="modal-title">Post a blog</h5>
+                        <h5 className="modal-title">{`${(this.props.edit? "Edit":"Post")} a blog`}</h5>
                         <span>{closeBtn}</span>
                     </div>
                     <div className="modal-body">
