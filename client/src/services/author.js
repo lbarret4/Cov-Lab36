@@ -9,7 +9,7 @@ function one(id) {
 }
 
 function insert(data) {
-    return baseService.post('/api/authors', data);
+    return baseService.post('/api/auth/create', data);
 }
 
 function update(id, data) {
