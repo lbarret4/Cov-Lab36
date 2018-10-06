@@ -4,12 +4,20 @@ import blogTagsRouter from './blogtags';
 let router = Router();
 
 let blogs = new Table('blogs');
+let authors = new Table('authors');
 
-router.use('/blogtags',blogTagsRouter);
+router.use('/blogtags', blogTagsRouter);
 
 router.get('/', async (req, res) => {
+    
     try {
         let results = await blogs.getAll();
+        results = await Promise.all(results.map(async (result) => {
+            let author = await authors.getOne(result.authorid);
+            result.author = await author.name;
+            return result;
+        }));
+
         res.json(await results);
 
     } catch (error) {
@@ -21,8 +29,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     let id = req.params.id;
     try {
-        let results = await blogs.getOne(id);
-        res.json(await results);
+        let result = await blogs.getOne(id);
+        let author = await authors.getOne(result.authorid);
+        result.author = await author.name;
+        res.json(await result);
 
     } catch (error) {
         console.log(error);
