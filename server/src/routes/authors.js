@@ -34,19 +34,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
-    let authorObj = req.body;
-    try {
-
-        let results = await authors.insert(authorObj);
-        res.json(await results);
-
-    } catch (error) {
-        console.log(error);
-        res.sendStatus(500);
-    }
-});
-
 router.put('/:id', async (req, res) => {
     let id = req.params.id;
     let authorObj = req.body;
