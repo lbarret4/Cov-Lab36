@@ -64,7 +64,7 @@ class Login extends Component {
             <Fragment>
                 <div className='row'>
                     <div className='col-md-6 offset-md-3'>
-                        {this.props.location.state? <p className='text-danger text-center'>You must be logged in to view this page.</p>: null}
+                        {this.props.location.state? <p className='mt-3 text-danger text-center alert alert-danger' role="alert">You must be logged in to view this page.</p>:''}
                     </div>
 
                 </div>
@@ -83,7 +83,7 @@ class Login extends Component {
                                 <p className="text-danger">{this.state.feedbackMessage}</p>
                             ) : null}
                             <input type="submit" value="Login" className="btn btn-primary btn-block" />
-                            <Link to='/'> Create an Account</Link>
+                            <Link to='/create-account'> Create an Account</Link>
                         </form>
                     </div>
                 </div>
