@@ -28,14 +28,14 @@ class Blog extends Component {
             divClass = "col-md-4 d-flex justify-content-center flex-column";
             truncate = "text-truncate";
         }
-
+     
         return (
             <Fragment>
 
                 <div className={divClass}>
                     {title}
                     <p className={truncate}> {blog.content}</p>
-                    <small className="text-muted d-flex justify-content-end">{blog.date.toLocaleDateString()}</small>
+                    <small className="text-muted d-flex justify-content-end">{`${blog.date.toLocaleDateString()} by ${blog.author}`}</small>
                     <p><Link className="btn text-white blogBtn" to={path} >Read more &raquo;</Link></p>
 
                 </div>
