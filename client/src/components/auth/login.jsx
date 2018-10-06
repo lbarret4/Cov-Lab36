@@ -64,7 +64,7 @@ class Login extends Component {
             <Fragment>
                 <div className='row'>
                     <div className='col-md-6 offset-md-3'>
-                        <p className='text-danger text-center'>You must be logged in to view this page.</p>
+                        {this.props.location.state? <p className='text-danger text-center'>You must be logged in to view this page.</p>: null}
                     </div>
 
                 </div>
@@ -80,7 +80,7 @@ class Login extends Component {
                                 <input id="password" className="form-control" type="password" onChange={(e) => this.handlePasswordChange(e.target.value)} required />
                             </div>
                             {this.state.feedbackMessage ? (
-                                <p>{this.state.feedbackMessage}</p>
+                                <p className="text-danger">{this.state.feedbackMessage}</p>
                             ) : null}
                             <input type="submit" value="Login" className="btn btn-primary btn-block" />
                             <Link to='/'> Create an Account</Link>
