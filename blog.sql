@@ -57,6 +57,16 @@ CREATE TABLE tokens
 
 );
 
+-- Create users using create user form (url:http://localhost:3000/login) for this table and then runs insert for other tables below.
+INSERT INTO authors(name,email,hash)
+VALUES  ('Charles','test1@test.com','********'),
+        ('Jemma','test2@test.com','********'),
+        ('Kim','test3@test.com','********'),
+        ('Amanda','test4@test.com','********'),
+        ('Kenji','test5@test.com','********'),
+        ('John','test6@test.com','********'),
+        ('Candice','test7@test.com','********');
+
 INSERT INTO blogs(title,authorid, content,_created)
 VALUES('Blog Title 1',6,'Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-18 09:38:32'),
 ('Blog Title 2',4,'Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-19 09:38:33'),
@@ -66,14 +76,6 @@ VALUES('Blog Title 1',6,'Words Words Words .Words .Words .Words. Words. Words .W
 ('Inserted Blog Title',3,'Added Words Added Words Added Words .Added Words .Added Words .Added Words. Added Words. Added Words .Added WordsAdded  Words Added Words Added Words .Added Words','2018-09-25 11:38:47'),
 ('Edited Blog Title ',5,'Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-30 12:55:58');
 
-INSERT INTO authors(name,email,hash)
-VALUES  ('Charles','test1@test.com','********'),
-        ('Jemma','test2@test.com','********'),
-        ('Kim','test3@test.com','********'),
-        ('Amanda','test4@test.com','********'),
-        ('Kenji','test5@test.com','********'),
-        ('John','test6@test.com','********'),
-        ('Candice','test7@test.com','********');
 
 INSERT INTO tags(name)
 VALUES  ('food'),      
@@ -87,7 +89,7 @@ VALUES  ('food'),
         ('movies'),
          ('tech');
 
-INSERT INTO blogstags(blogid,tagid)
+INSERT INTO blogtags(blogid,tagid)
 VALUES
 (1,1),
 (1,3),
