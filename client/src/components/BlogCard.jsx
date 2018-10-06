@@ -4,13 +4,19 @@ import * as blogsService from '../services/blogs';
 import * as blogtagsService from '../services/blogtags';
 import BlogEdit from './BlogEdit';
 import { isLoggedIn } from '../services/user';
+import IndeterminateProgress from './utilities/indeterminateProgress';
+import { Redirect } from 'react-router-dom';
+
+
+
 class BlogCard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             blog: {},
-            tags: []
+            tags: [],
+            hasLoaded: false
         };
         this.handlesDelete = this.handlesDelete.bind(this);
     }
@@ -20,11 +26,10 @@ class BlogCard extends Component {
         let id = this.props.match.params.id;
         try {
             let [data1, data2] = await Promise.all([blogsService.one(id), blogtagsService.one(id)]);
-            data1.date = new Date(await data1['_created']);
-            delete data1["_created"];
             this.setState({
                 blog: await data1,
-                tags: await data2
+                tags: await data2,
+                hasLoaded :true
             });
         } catch (error) {
             console.log(error);
@@ -46,12 +51,17 @@ class BlogCard extends Component {
 
     }
 
-
     render() {
-        let blog = this.state.blog;
+        let { blog, tags, hasLoaded } = this.state;
+      
+        if (!hasLoaded) {
+            return <IndeterminateProgress />;
+        } 
+
+
         let Btn = (<Fragment><button type="button" class="btn btn-outline-danger mx-1" onClick={this.handlesDelete}>Delete</button><button type="button" class="btn btn-outline-primary mx-1" data-toggle="modal" data-target="#blogModal">Edit</button></Fragment>);
-        let tags = this.state.tags.map((tag, index) => {
-            if (this.state.tags.length !== 0) {
+        let tagList = tags.map((tag, index) => {
+            if (tags.length !== 0) {
                 return (
                     <label className={`badgeMod badge-info mx-2 my-1`} key={tag['_created']}>{tag.name}</label>);
             } else {
@@ -66,10 +76,10 @@ class BlogCard extends Component {
             </div>);
         let body = (<Fragment>
             <span className="text-right  text-muted d-block">
-                {blog.date ? blog.date.toLocaleDateString() : ''}</span>
+                { blog.date ? `${blog.date.toLocaleDateString()} by ${blog.author}`:''}</span>
             {blog.content}
         </Fragment>);
-        let footer = (tags.length !== 0 ? <Fragment><span className="d-block col-12"> Tags:</span> <span className="ml-2 form-inline">{tags}</span></Fragment> : '');
+        let footer = (tagList.length !== 0 ? <Fragment><span className="d-block col-12"> Tags:</span> <span className="ml-2 form-inline">{tagList}</span></Fragment> : '');
 
         return (
             <Fragment>
@@ -77,7 +87,7 @@ class BlogCard extends Component {
                 <div class="modal fade" id="blogModal" tabindex="-1" role="dialog" aria-labelledby="chirpsModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
-                        <BlogEdit edit={true} blog={blog} tags={tags} location={this.props.location} id={this.props.match.params.id} />
+                        <BlogEdit edit={true} blog={blog} tags={tagList} location={this.props.location} id={this.props.match.params.id} />
                     </div>
                 </div>
             </Fragment>
