@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import BlogFeed from './BlogFeed';
 import * as blogsService from '../services/blogs';
+
 class Home extends Component {
 
     constructor(props) {
@@ -13,14 +14,9 @@ class Home extends Component {
     async componentDidMount() {
 
         try {
-            let data = await blogsService.all();
-            data = await data.map((item) => {
-                item.date = new Date(item['_created']);
-                delete item["_created"];
-                return (item);
-            });
+            let data1 = await blogsService.all();
             this.setState({
-                blogList: await data
+                blogList: await data1
             });
         } catch (error) {
             console.log(error);
