@@ -16,6 +16,7 @@ CREATE TABLE authors
     id INT NOT NULL auto_increment PRIMARY KEY,
     name VARCHAR(60) NOT NULL,
     email VARCHAR(254) NOT NULL,
+    password VARCHAR(45) NOT NULL,
     hash VARCHAR(60) NOT NULL,
     _created DATETIME DEFAULT CURRENT_TIMESTAMP
 
@@ -58,14 +59,14 @@ CREATE TABLE tokens
 );
 
 -- Create users using create user form (url:http://localhost:3000/login) for this table and then runs insert for other tables below.
-INSERT INTO authors(name,email,hash)
-VALUES  ('Charles','test1@test.com','********'),
-        ('Jemma','test2@test.com','********'),
-        ('Kim','test3@test.com','********'),
-        ('Amanda','test4@test.com','********'),
-        ('Kenji','test5@test.com','********'),
-        ('John','test6@test.com','********'),
-        ('Candice','test7@test.com','********');
+INSERT INTO authors(name,email,password,hash)
+VALUES  ('Charles','test1@test.com','********','********'),
+        ('Jemma','test2@test.com','********','********'),
+        ('Kim','test3@test.com','********','********'),
+        ('Amanda','test4@test.com','********','********'),
+        ('Kenji','test5@test.com','********','********'),
+        ('John','test6@test.com','********','********'),
+        ('Candice','test7@test.com','********','********');
 
 INSERT INTO blogs(title,authorid, content,_created)
 VALUES('Blog Title 1',6,'Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-18 09:38:32'),
