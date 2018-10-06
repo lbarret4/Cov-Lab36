@@ -7,6 +7,11 @@ let authors = new Table('authors');
 router.get('/', async (req, res) => {
     try {
         let results = await authors.getAll();
+        results = await results.map((result)=>{
+            delete result.password;
+            delete result.hash;
+            return result;
+        });
         res.json(await results);
 
     } catch (error) {
@@ -19,6 +24,8 @@ router.get('/:id', async (req, res) => {
     let id = req.params.id;
     try {
         let results = await authors.getOne(id);
+        delete results.password;
+        delete results.hash;
         res.json(await results);
 
     } catch (error) {
