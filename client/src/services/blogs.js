@@ -1,11 +1,37 @@
 import * as baseService from './base';
 
 function all() {
-    return baseService.get('/api/blogs');
+    let results = (async () => {
+        try {
+            let data = await baseService.get('/api/blogs');
+            data = await data.map((result) => {
+                result.date = new Date(result['_created']);
+                delete result['_created'];
+                return result;
+            });
+            return data;
+
+        } catch (error) {
+            throw (error);
+        }
+
+    })();
+    return results;
 }
 
 function one(id) {
-    return baseService.get(`/api/blogs/${id}`);
+
+    let result = (async () => {
+        try {
+            let data = await baseService.get(`/api/blogs/${id}`);
+            data.date = new Date(await data['_created']);
+            delete data["_created"];
+            return data;
+        } catch (error) {
+            throw (error);
+        }
+    })();
+    return result;
 }
 
 function insert(data) {
