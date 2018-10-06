@@ -34,12 +34,9 @@ class Tags extends Component {
         } catch (error) {
             console.log(error);
         }
-
-    }
-
-    componentDidUpdate(prevProps) {
+        
         let checkedTag = this.props.tags;
-        if (this.props.edit && checkedTag && checkedTag !== prevProps.tags) {
+        if (this.props.edit && checkedTag) {
             let tags = this.state.tags;
             tags = tags.map((tag) => {              
                 checkedTag.forEach((item) => {                  
@@ -52,6 +49,7 @@ class Tags extends Component {
             });
 
         }   
+
     }
     handlesOnChange(e) {
         let target = e.target;
